@@ -1,6 +1,7 @@
 package site.slovyagin;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
+import org.junit.jupiter.api.*;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
@@ -14,20 +15,57 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-public class CreateCrmProject {
-    private static WebDriver driver;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-    public static void main(String[] args) throws InterruptedException {
+public class CRMTests {
+    static WebDriver driver;
+    WebDriverWait webDriverWait;
+    private static final String BASE_URL = "https://crm.geekbrains.space/";
+
+    @BeforeAll
+    static void registerDriver() {
         WebDriverManager.chromedriver().setup();
+    }
 
+    @BeforeEach
+    void setupBrowser() {
         driver = new ChromeDriver();
+        webDriverWait = new WebDriverWait(driver, 5);
         driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
-
-        driver.manage().window().maximize();
-        WebDriverWait webDriverWait = new WebDriverWait(driver, 5);
-
         loginToCrm();
+    }
 
+    @Test
+    @DisplayName("Проверка создания контакта")
+    void createCrmContant() {
+        Actions actions = new Actions(driver);
+        WebElement projectMenuElement = driver.findElement(By.xpath("//a/span[text()='Контрагенты']"));
+        actions.moveToElement(projectMenuElement).perform();
+
+        driver.findElement(By.xpath("//*[text()=\"Контактные лица\"]")).click();
+
+        webDriverWait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[text()=\"Создать контактное лицо\"]")));
+        driver.findElement(By.xpath("//*[text()=\"Создать контактное лицо\"]")).click();
+
+        webDriverWait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//input[contains(@id,'crm_contact_lastName')]")));
+        driver.findElement(By.xpath("//input[contains(@id,'crm_contact_lastName')]")).sendKeys("name1111");
+        driver.findElement(By.xpath("//input[contains(@id,'crm_contact_firstName')]")).sendKeys("name3333");
+        driver.findElement(By.xpath("//input[contains(@id,'crm_contact_jobTitle')]")).sendKeys("manager");
+
+        driver.findElement(By.xpath("//span[@class=\"select2-chosen\"]")).click();
+        webDriverWait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("(.//div[@class=\"select2-result-label\"])[2]")));
+        driver.findElement(By.xpath("(.//div[@class=\"select2-result-label\"])[2]")).click();
+
+        driver.findElement(By.xpath("//button[contains(@class,\"main-group\")][contains(.,'Сохранить')]")).click();
+
+        webDriverWait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[text()='Контактное лицо сохранено']")));
+        assertTrue(driver.findElement(By.xpath("//*[text()='Контактное лицо сохранено']")).isDisplayed());
+        assertTrue(driver.getCurrentUrl().contains("/view"));
+    }
+
+    @Test
+    @DisplayName("Проверка создания проекта")
+    void createCrmProject() throws InterruptedException {
         Actions actions = new Actions(driver);
         WebElement projectMenuElement = driver.findElement(By.xpath("//a/span[text()='Проекты']"));
         actions.moveToElement(projectMenuElement).perform();
@@ -38,7 +76,7 @@ public class CreateCrmProject {
         driver.findElement(By.xpath("//a[text()='Создать проект']")).click();
 
         webDriverWait.until(ExpectedConditions.elementToBeClickable(By.name("crm_project[name]")));
-        driver.findElement(By.name("crm_project[name]")).sendKeys("crm_project[name]");
+        driver.findElement(By.name("crm_project[name]")).sendKeys("crm_project[name]1");
 
         driver.findElement(By.xpath("//span[text()='Укажите организацию']")).click();
         driver.findElement(By.xpath("//div[@id='select2-drop']//input")).sendKeys("test");
@@ -74,7 +112,9 @@ public class CreateCrmProject {
 
         driver.findElement(By.xpath("//button[contains(@class,\"main-group\")][contains(.,'Сохранить')]")).click();
 
-        driver.quit();
+        webDriverWait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[text()='Проект сохранен']")));
+        assertTrue(driver.findElement(By.xpath("//*[text()='Проект сохранен']")).isDisplayed());
+        assertTrue(driver.getCurrentUrl().contains("/view"));
     }
 
     public static void loginToCrm() {
@@ -82,5 +122,10 @@ public class CreateCrmProject {
         driver.findElement(By.id("prependedInput")).sendKeys("Applanatest1");
         driver.findElement(By.id("prependedInput2")).sendKeys("Student2020!");
         driver.findElement(By.xpath("//button")).click();
+    }
+
+    @AfterEach
+    void tearDown() {
+        driver.quit();
     }
 }
