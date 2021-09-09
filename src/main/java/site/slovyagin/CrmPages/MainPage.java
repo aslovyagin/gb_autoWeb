@@ -1,5 +1,6 @@
 package site.slovyagin.CrmPages;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -37,6 +38,7 @@ public class MainPage extends BaseView {
     @FindBy(xpath = "//a[@href='/search/']/i")
     WebElement searchLink;
 
+    @Step("Клик на ссылку поиска")
     public Search clickOnSearchLink() {
         searchLink.click();
         webDriverWait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(Search.searchInputXPath)));

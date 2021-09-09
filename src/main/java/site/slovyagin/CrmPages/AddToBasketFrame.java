@@ -1,5 +1,6 @@
 package site.slovyagin.CrmPages;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -17,6 +18,7 @@ public class AddToBasketFrame extends BaseView {
     @FindBy(xpath = addButtonXPath)
     WebElement addButton;
 
+    @Step("Клик на кнопку добавить в корзину")
     public void clickOnAddButton() {
         addButton.click();
         webDriverWait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(Cart.titleOfItemXpath)));
