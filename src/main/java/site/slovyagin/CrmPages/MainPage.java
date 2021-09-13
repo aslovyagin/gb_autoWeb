@@ -1,54 +1,48 @@
 package site.slovyagin.CrmPages;
 
+import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import site.slovyagin.BaseView;
 
-public class MainPage extends BaseView {
+import static com.codeborne.selenide.Selenide.*;
+
+public class MainPage {
     public NavigationMenu navigationMenu;
 
     private static final String mainUrl = "https://uniquefabric.ru/";
 
-    public MainPage(WebDriver driver) {
-        super(driver);
-        navigationMenu = new NavigationMenu(driver);
+    public MainPage() {
+        navigationMenu = new NavigationMenu();
     }
 
     @FindBy(linkText = "FAQ")
-    WebElement FAQlink;
+    private SelenideElement FAQlink = $(By.linkText("FAQ"));
+
 
     public FAQ clickOnFAQlink() {
         FAQlink.click();
-        return new FAQ(driver);
+        return page(FAQ.class);
     }
 
     @FindBy(linkText = "Контакты")
-    WebElement contactLink;
+    private SelenideElement contactLink = $(By.linkText("Контакты"));
 
     public Contacts clickOnContactlink() {
         contactLink.click();
-        webDriverWait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(Contacts.allContanctsXPath)));
-        return new Contacts(driver);
+        return page(Contacts.class);
     }
 
-    @FindBy(xpath = "//a[@href='/search/']/i")
-    WebElement searchLink;
+    private SelenideElement searchLink = $(By.xpath("//a[@href='/search/']/i"));
 
-    @Step("Клик на ссылку поиска")
     public Search clickOnSearchLink() {
         searchLink.click();
-        webDriverWait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(Search.searchInputXPath)));
-        return new Search(driver);
+        return page(Search.class);
     }
 
+    @Step("Переход на главную страницу")
     public MainPage getPage() {
-        driver.get(mainUrl);
+        open(mainUrl);
         return this;
     }
-
-
 }

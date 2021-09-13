@@ -1,22 +1,17 @@
 package site.slovyagin.CrmPages;
 
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
-import site.slovyagin.BaseView;
+import com.codeborne.selenide.SelenideElement;
+import org.openqa.selenium.By;
+
+import static com.codeborne.selenide.Selenide.$$;
 
 import java.util.List;
 
-public class SearchResults extends BaseView {
+public class SearchResults  {
 
-    public SearchResults(WebDriver driver) {
-        super(driver);
-    }
+    private List<SelenideElement> findedElements = $$(By.xpath("//a[@itemprop]/span[@itemprop]"));
 
-    @FindBy(xpath = "//a[@itemprop]/span[@itemprop]")
-    List<WebElement> findedElements;
-
-    public List<WebElement> getFindedElements() {
+    public List<SelenideElement> getFindedElements() {
         return findedElements;
     }
 }

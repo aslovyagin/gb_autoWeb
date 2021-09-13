@@ -1,28 +1,19 @@
 package site.slovyagin.CrmPages;
 
+import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
-import site.slovyagin.BaseView;
-
+import org.openqa.selenium.By;
 import java.util.List;
-import java.util.Locale;
 
-public class BagsSubMenu extends BaseView {
+import static com.codeborne.selenide.Selenide.$$;
 
-    public BagsSubMenu(WebDriver driver) {
-        super(driver);
-    }
+public class BagsSubMenu {
 
-    @FindBy(xpath = "//li[@class='side-nav__item side-nav__item--parent js-collapse-item opened']//span[@class='side-nav__link-sub']/a[contains(@href,'sumki_i_ryukzaki')]")
-    List<WebElement> bagsSubMenus;
+    private List<SelenideElement> bagsSubMenus = $$(By.xpath("//li[@class='side-nav__item side-nav__item--parent js-collapse-item opened']//span[@class='side-nav__link-sub']/a[contains(@href,'sumki_i_ryukzaki')]"));
 
-    @Step("Клик на подменю 'Сумки'")
-    public BagsList clickBagsSubMenu(String subCategory) {
+    @Step("Выбор подкатегории")
+    public void clickBagsSubMenu(String subCategory) {
         bagsSubMenus.stream().filter(webElement -> webElement.getText()
-                .equals(subCategory)).findFirst().get().click();
-        return new BagsList(driver);
+                .contains(subCategory)).findFirst().get().click();
     }
-
 }

@@ -1,33 +1,25 @@
 package site.slovyagin.CrmPages;
 
-import io.qameta.allure.Step;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
-import site.slovyagin.BaseView;
+import com.codeborne.selenide.SelenideElement;
+import org.openqa.selenium.By;
 
-public class Search extends BaseView {
+import static com.codeborne.selenide.Selenide.$;
+import static com.codeborne.selenide.Selenide.page;
 
-    public Search(WebDriver driver) {
-        super(driver);
-    }
+public class Search {
 
-    public static final String searchInputXPath = "//input[contains(@class,'search__input')]";
-    @FindBy(xpath = searchInputXPath)
-    WebElement searchInput;
 
-    @Step("Ввод поискового запроса")
+    private SelenideElement searchInput = $(By.xpath("searchInputXPath"));
+
     public Search typeSearchInput(String forSearch) {
         searchInput.sendKeys(forSearch);
         return this;
     }
 
-    @FindBy(xpath = "//button/i[contains(@class,'icon-search')]")
-    WebElement searchButton;
+    private SelenideElement searchButton = $(By.xpath("//button/i[contains(@class,'icon-search')]"));
 
-    @Step("Клик на кнопку 'Найти'")
     public SearchResults clickOnSearchButton() {
         searchButton.click();
-        return new SearchResults(driver);
+        return page(SearchResults.class);
     }
 }

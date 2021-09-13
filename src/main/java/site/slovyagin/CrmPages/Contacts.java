@@ -1,24 +1,23 @@
 package site.slovyagin.CrmPages;
 
+import com.codeborne.selenide.SelenideElement;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import site.slovyagin.BaseView;
 
 import java.util.List;
 
-public class Contacts extends BaseView {
+import static com.codeborne.selenide.Selenide.$$;
+
+public class Contacts {
 
     public static final String allContanctsXPath = "//div[@class='social social--icon']//li";
-    @FindBy(xpath = "//div[@class='social social--icon']//li")
-    List<WebElement> allContacts;
+    private List<SelenideElement> allContacts = $$(By.xpath("//div[@class='social social--icon']//li"));
+
 
     public int getAllContactsSize() {
         return allContacts.size();
-    }
-
-    public Contacts(WebDriver driver) {
-        super(driver);
     }
 
 }

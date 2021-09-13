@@ -1,23 +1,20 @@
 package site.slovyagin.CrmPages;
 
+import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
-import site.slovyagin.BaseView;
+import org.openqa.selenium.By;
 
-public class BagsList extends BaseView {
+import static com.codeborne.selenide.Selenide.$;
+import static com.codeborne.selenide.Selenide.page;
 
-    public BagsList(WebDriver driver) {
-        super(driver);
-    }
+public class BagsList {
 
-    @FindBy(xpath = "//div[@id='products']/div[4]//img[1]")
-    WebElement item;
+    private SelenideElement item = $(By.xpath("//div[@id='products']/div[4]//img[1]"));
 
-    @Step("Клик на позицию товара")
+
+    @Step("Клик на элемент")
     public ItemPage clickOnItem() {
         item.click();
-        return new ItemPage(driver);
+        return page(ItemPage.class);
     }
 }
