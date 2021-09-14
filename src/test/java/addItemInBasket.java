@@ -1,16 +1,13 @@
-import com.codeborne.selenide.junit.ScreenShooter;
-import com.codeborne.selenide.junit5.ScreenShooterExtension;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.extension.RegisterExtension;
 import site.slovyagin.CrmPages.*;
 
+import static com.codeborne.selenide.Selenide.screenshot;
+
 public class addItemInBasket {
-    @RegisterExtension
-    static ScreenShooterExtension screenshotEmAll = new ScreenShooterExtension(true).to("target/screenshots");
 
     public String itemName;
 
@@ -24,6 +21,7 @@ public class addItemInBasket {
         new MainPage().navigationMenu.categoryClick("Сумки и рюкзаки");
         Thread.sleep(10000);
         new BagsSubMenu().clickBagsSubMenu("Сумки");
+
     }
 
     @And("^I click on item$")
@@ -43,6 +41,6 @@ public class addItemInBasket {
 
     @Then("^Items in basket contains choosen item$")
     public void itemsInBasketContainsChoosenItem() {
-        Assertions.assertTrue(itemName.contains(new Cart().titleOfItemXpath.text()));
+        Assertions.assertTrue("хуй".contains(new Cart().titleOfItemXpath.text()));
     }
 }
