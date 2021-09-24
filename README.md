@@ -12,7 +12,7 @@ Apache Maven
 Основы Selenium
 
 Урок 4
-JUnit
+JUnit + hidden ads + logback
 
 Урок 5
 Основы Selenium - часть 2
