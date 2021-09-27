@@ -15,7 +15,7 @@ Apache Maven
 JUnit + hidden ads + logback
 
 Урок 5
-Основы Selenium - часть 2
+Основы Selenium - часть 2 + hamcrest + переопределение Matcher и ExpectedConditions + Actions
 
 Урок 6
 Page Object
