@@ -41,6 +41,6 @@ public class addItemInBasket {
 
     @Then("^Items in basket contains choosen item$")
     public void itemsInBasketContainsChoosenItem() {
-        Assertions.assertTrue("хуй".contains(new Cart().titleOfItemXpath.text()));
+        Assertions.assertTrue("test".contains(new Cart().titleOfItemXpath.text()));
     }
 }
